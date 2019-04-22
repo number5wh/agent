@@ -1,0 +1,54 @@
+{extend name="common/base" /}
+
+{block name="title"}主页{/block}
+
+
+{block name="content"}
+<div class="layui-row layui-col-space30">
+    <div class="layui-col-md3 layui-col-lg3 layui-col-xs12 layui-col-sm6 ">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                总玩家
+                <span class="layui-badge layui-bg-blue layuiadmin-badge">全部</span>
+            </div>
+            <div class="layui-card-body layuiadmin-card-list">
+                <p class="layuiadmin-big-font">{$user['totaluser']}</p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md3 layui-col-lg3 layui-col-xs12 layui-col-sm6 ">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                总收入
+                <span class="layui-badge layui-bg-blue layuiadmin-badge">全部</span>
+            </div>
+            <div class="layui-card-body layuiadmin-card-list">
+                <p class="layuiadmin-big-font">{$user['totalincome']}</p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md3 layui-col-lg3 layui-col-xs12 layui-col-sm6 ">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                总充值
+                <span class="layui-badge layui-bg-blue layuiadmin-badge">全部</span>
+            </div>
+            <div class="layui-card-body layuiadmin-card-list">
+                <p class="layuiadmin-big-font">{$user['totalcharge']}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.config({
+        base: '/src/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index']);
+</script>
+{/block}
+

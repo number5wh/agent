@@ -1,0 +1,54 @@
+{extend name="common/base" /}
+
+{block name="title"}提现记录{/block}
+{block name="content"}
+<div class="layui-card">
+  <div class="layui-card-header layuiadmin-card-header-auto">
+    <h2>提现总额:<span id="total_amount">0</span></h2>
+  </div>
+
+  <div class="layui-card-body">
+    <table id="dataTable" lay-filter="dataTable"></table>
+  </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script>
+  layui.use(['layer','table','form','jquery'],function () {
+    var layer = layui.layer
+            ,form = layui.form
+            ,table = layui.table
+            ,$ = layui.$;
+    //用户表格初始化
+    var dataTable = table.render({
+      elem: '#dataTable'
+      , height: 500
+      , url: "{:url('withdraw.listData')}" //数据接口
+      , where: {}
+      , page: true //开启分页
+      , cols: [[ //表头
+        {field: 'id', title: 'ID', sort: true, width: 80}
+        , {field: 'checktypeName', title: '账号类型'}
+        , {field: 'account', title: '账号'}
+        , {field: 'getname', title: '姓名'}
+        , {field: 'statusInf', title: '状态'}
+        , {field: 'amount', title: '金额'}
+        , {field: 'info', title: '备注'}
+      ]]
+    });
+    $.ajax({
+      type:'get',
+      url:'/withdraw/getAmount',
+      dataType:'json',
+      success: function(res) {
+        if (res.code === 0) {
+          $('#total_amount').html(res.amount);
+        }
+      }
+    });
+  });
+</script>
+{/block}
+

@@ -1,0 +1,143 @@
+{extend name="common/base" /}
+
+{block name="title"}结算账号{/block}
+{block name="content"}
+<div class="layui-card">
+  <div class="layui-card-header layuiadmin-card-header-auto">
+    <h2>结算账号</h2>
+  </div>
+
+  <div class="layui-card-body">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+      <legend>支付宝</legend>
+    </fieldset>
+    <form class="layui-form" action="{:url('withdraw.doSetAlipay')}" method="post">
+      {:token()}
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">姓名：</label>
+          <div class="layui-input-inline">
+            <input type="text" name="alipay_name" value="{$info['alipay_name']}" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <label class="layui-form-label">账号：</label>
+          <div class="layui-input-inline">
+            <input type="text" name="alipay" value="{$info['alipay']}" placeholder="请输入账号" lay-verify="required" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+          <button type="submit" class="layui-btn" lay-submit="" lay-filter="withdraw-doSetAlipay">新增/修改</button>
+        </div>
+      </div>
+
+    </form>
+
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+      <legend>银行卡</legend>
+    </fieldset>
+
+    <form class="layui-form" action="{:url('withdraw.doSetBank')}" method="post">
+      {:token()}
+      <div class="layui-form-item">
+
+        <div class="layui-inline">
+          <label class="layui-form-label">姓名：</label>
+          <div class="layui-input-inline">
+            <input type="text" name="name" value="{$info['name']}" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <label class="layui-form-label">账号：</label>
+          <div class="layui-input-inline">
+            <input type="text" name="cardaccount" value="{$info['cardaccount']}" lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">开户行：</label>
+          <div class="layui-input-inline" >
+            <input type="text" name="bank" value="{$info['bank']}" lay-verify="required" placeholder="请输入开户行" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+          <button type="submit" class="layui-btn" lay-submit="" lay-filter="withdraw-doSetBank">新增/修改</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script>
+  layui.extend({
+    getToken:'../src/layuiadmin/mymod/getToken'
+  }).use(['layer','table','form','jquery','getToken'],function () {
+    var layer = layui.layer
+        ,form = layui.form
+        ,table = layui.table
+            ,$ = layui.$
+            ,getToken = layui.getToken;
+
+    //支付宝
+    form.on('submit(withdraw-doSetAlipay)', function(data) {
+      $.ajax({
+        type: 'post',
+        url: data.form.action,
+        data: {
+          'alipay_name': $.trim(data.field.alipay_name),
+          'alipay': $.trim(data.field.alipay),
+          //'__token__': $.trim(data.field.__token__)
+        },
+        dataType: 'json',
+        success: function (res) {
+          // var token = getToken.getToken();
+          // $("input[name='__token__']").val(token);
+          if (res.code === 0) {
+            layer.msg(res.msg, {icon: 6});
+          } else {
+            layer.msg(res.msg, {icon: 5});
+          }
+        }
+      });
+      return false;
+    });
+
+    //银行卡
+    form.on('submit(withdraw-doSetBank)', function(data) {
+      $.ajax({
+        type: 'post',
+        url: data.form.action,
+        data: {
+          'name': $.trim(data.field.name),
+          'bank': $.trim(data.field.bank),
+          'cardaccount': $.trim(data.field.cardaccount),
+          // '__token__': $.trim(data.field.__token__)
+        },
+        dataType: 'json',
+        success: function (res) {
+          // var token = getToken.getToken();
+          // $("input[name='__token__']").val(token);
+          if (res.code === 0) {
+            layer.msg(res.msg, {icon: 6});
+          } else {
+            layer.msg(res.msg, {icon: 5});
+          }
+        }
+      });
+      return false;
+    });
+  });
+</script>
+{/block}
+

@@ -1,0 +1,42 @@
+{extend name="common/base" /}
+
+{block name="title"}游戏明细{/block}
+{block name="content"}
+<div class="layui-card">
+  <div class="layui-card-header layuiadmin-card-header-auto">
+    <h2>游戏明细</h2>
+  </div>
+
+  <div class="layui-card-body">
+    <table id="detail" lay-filter="detail"></table>
+  </div>
+</div>
+
+{/block}
+
+{block name="script"}
+
+<script>
+  layui.use(['layer','table','form'],function () {
+    var layer = layui.layer
+        ,form = layui.form
+        ,table = layui.table;
+    //用户表格初始化
+    var dataTable = table.render({
+      elem: '#detail'
+      , height: 500
+      , url: "{:url('detail.getData')}" //数据接口
+      , where: {}
+      , page: true //开启分页
+      , cols: [[ //表头
+         {field: 'id', title: 'ID', sort: true, width: 80}
+        , {field: 'userid', title: '账号'}
+        , {field: 'addtime', title: '时间'}
+        , {field: 'roomname', title: '游戏房间'}
+        , {field: 'changemoney', title: '输赢详情'}
+      ]]
+    });
+  });
+</script>
+{/block}
+

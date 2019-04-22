@@ -1,0 +1,57 @@
+{extend name="common/base" /}
+
+{block name="title"}用户列表{/block}
+{block name="content"}
+<div class="layui-card">
+  <div class="layui-card-header layuiadmin-card-header-auto">
+    <h2>用户列表</h2>
+  </div>
+
+  <div class="layui-card-body">
+    <table id="userlist" lay-filter="userlist"></table>
+  </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script type="text/html" id="userlist-bar">
+  <a class="layui-btn layui-btn-xs" lay-event="edit-pwd">修改密码</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit-phone">修改密保手机号</a>
+</script>
+<script>
+  layui.use(['layer','table','form'],function () {
+    var layer = layui.layer
+        ,form = layui.form
+        ,table = layui.table;
+    //用户表格初始化
+    var dataTable = table.render({
+      elem: '#userlist'
+      , height: 500
+      , url: "{:url('user.listData')}" //数据接口
+      , where: {}
+      , page: true //开启分页
+      , cols: [[ //表头
+         {field: 'id', title: 'ID', sort: true, width: 80}
+        , {field: 'account', title: '账号'}
+        , {field: 'userid', title: 'userid'}
+        , {field: 'role', title: '角色'}
+        , {fixed: 'right', title:'操作', align:'center', toolbar: '#userlist-bar'}
+      ]]
+    });
+
+    table.on('tool(userlist)', function(obj) {
+      var data = obj.data //获得当前行数据
+          ,layEvent = obj.event //获得 lay-event 对应的值
+          ,tr = obj.tr; //获得当前行 tr 的DOM对象
+      if (layEvent === 'edit-pwd') {
+        layer.msg('你点击了修改密码, 当前用户id='+data.id);
+      } else if (layEvent === 'edit-phone') {
+        layer.msg('你点击了修改手机, 当前用户id='+data.id);
+      }
+
+    });
+  });
+</script>
+{/block}
+
